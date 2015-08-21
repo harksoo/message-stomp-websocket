@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<link
+	href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700"
+	rel="stylesheet" type="text/css" />
+<!--     <link href="./css/style.css" rel="stylesheet" type="text/css" /> -->
+<link rel="stylesheet" href="./chartist-js/chartist.min.css">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<script src="sockjs-0.3.4.js"></script>
+<script src="stomp.js"></script>
+<script type="text/ecmascript" src="./jquery/jquery-2.1.4.js"></script>
+<script src="./angularJS/angular.min.js"></script>
+<script src="./lodash/lodash.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<!-- chartistjs -->
+<script src="./chartist-js/chartist.min.js"></script>
+
+<script src="./app/app3.js" type="text/javascript"></script>
+<script src="./app/alarmCtrls.js" type="text/javascript"></script>
+<script src="./app/alarmServices.js" type="text/javascript"></script>
+
+</head>
+<body ng-app="perfomanceApp">
+	
+	<h2>Test Table</h2>
+	<table class="table table-hover" ng-controller="AlarmCtrl">
+		<thead>
+			<tr>
+				<th style="width:150px">System</th>
+				<th style="width:150px">Upper</th>
+				<th style="width:150px">Lower</th>
+				<th style="width:150px">Item</th>
+				<th style="width:200px">Date</th>
+				<th style="width:150px">Alarm</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in alarmList">
+				<td>{{ item.system }}</td>
+				<td>{{ item.upper }}</td>
+				<td>{{ item.lower }}</td>
+				<td>{{ item.item}}</td>
+				<td>{{ item.date }}</td>
+				<td ng-class="{ bgcolor0 : item.alarm == 'NORMAL', bgcolor1 : item.alarm == 'MINOR', bgcolor2 : item.alarm == 'MAJOR', bgcolor3 : item.alarm == 'CRITICAL'}">{{ item.alarm}}</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<h2>소요 시간</h2>
+	<table class="table table-hover" ng-controller="AlarmCtrl">
+		<thead>
+			<tr>
+				<th style="width:200px">시작시간</th>
+				<th style="width:200px">종료시간</th>
+				<th style="width:200px">처리건수</th>
+				<th style="width:200px">소요시간</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in processTimeList">
+				<td>{{ item.startTime }}</td>
+				<td>{{ item.endTime }}</td>
+				<td>{{ item.count }}</td>
+				<td>{{ item.handleTime }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div ng-controller="AlarmCtrl">
+		schedule receive 수 : <span>{{ count }}</span>	
+	</div>
+	
+<!-- 		시작시간, 종료시간 -->
+<!-- 	<div ng-controller="AlarmCtrl"> -->
+<!-- 		시작시간 : <span>{{ startTime }}</span> -->
+<!-- 		<br> -->
+<!-- 		종료시간 : <span>{{ endTime }}</span> -->
+<!-- 		<br> -->
+<!-- 		처리시간 : <span>{{ handleTime }}</span> -->
+<!-- 	</div> -->
+
+</body>
+</html>
