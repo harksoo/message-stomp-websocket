@@ -1,4 +1,4 @@
-package omp.telcoware.com;
+package com.telcoware.omp;
 
 public class IntervalType {
 	public static final String Sencond10 = "Sencond10";

@@ -1,4 +1,4 @@
-package omp.telcoware.com;
+package com.telcoware.omp;
 
 public class ResourceMonitor {
 	private String timestamp;

@@ -1,7 +1,6 @@
-package omp.telcoware.com;
+package com.telcoware.omp.config;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -14,20 +13,15 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 //@EnableScheduling // schalue이  websocket module에서도 사용을 함으로 발생한다.
 
 @EnableWebSocketMessageBroker
-@ImportResource("classpath:tcpClientServerDemo-context.xml")
+//@ImportResource("classpath:/tcpClientServerDemo-context.xml")
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
-
 
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
 		// TODO Auto-generated method stub
 		//super.configureMessageBroker(registry);
-		//config.enableSimpleBroker("/topic,/user");
+		
 		config.enableSimpleBroker("/queue", "/topic");
-		//config.enableSimpleBroker("/omp");
-
-		//config.enableSimpleBroker("/test");
-		//config.enableSimpleBroker("/user");
 		config.setApplicationDestinationPrefixes("/app");
 	}
 	

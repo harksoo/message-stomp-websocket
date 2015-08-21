@@ -1,4 +1,4 @@
-package omp.telcoware.com;
+package com.telcoware.omp.config;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -10,7 +10,7 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 @Configuration
 @EnableScheduling
-public class AppConfig implements SchedulingConfigurer {
+public class SchedulingConfig implements SchedulingConfigurer {
  
 // @Bean
 // public Demon demon() {

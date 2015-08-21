@@ -28,10 +28,12 @@
     <script src="./angularJS/angular.min.js"></script>
     <script src="./lodash/lodash.min.js"></script>
     <script src="./app/app.js" type="text/javascript"></script>
-    <script src="./app/jqGridDirective.js" type="text/javascript"></script>
+	<script src="./app/jqGridDirective.js" type="text/javascript"></script>
     <script src="./app/chartDirective.js" type="text/javascript"></script>
     <script src="./app/chatControllers.js" type="text/javascript"></script>
+    <script src="./app/occmControllers.js" type="text/javascript"></script>
     <script src="./app/websockServices.js" type="text/javascript"></script>
+
     
     <!-- angularJS treeview -->
     <!-- 
@@ -55,6 +57,28 @@
 
 <body ng-app="oamApp">
 
+ 
+<div ng-controller="occmController" >
+
+	<p ng-model="firstMessage">
+		<time>{{firstMessage.localtime | date:'HH:mm:ss.sss'}}</time>
+		<time>{{firstMessage.time | date:'HH:mm:ss.sss'}}</time>
+		<span >{{firstMessage.id}}</span>
+		<span >{{firstMessage.message}}</span>
+	</p>
+	<hr/>
+	<hr/>
+	<p ng-repeat="message in messages " class="message">
+		<time>{{message.localtime | date:'HH:mm:ss.sss'}}</time>
+		<time>{{message.time | date:'HH:mm:ss.sss'}}</time>
+		<span >{{message.id}}</span>
+		<span >{{message.message}}</span>
+	</p>
+</div>
+
+
+
+<!-- 
 <div ng-controller="chatController" >
   <form ng-submit="addMessage()" name="messageForm">
     <input type="text" placeholder="Compose a new message..." ng-model="message" />
@@ -77,9 +101,9 @@
 
  
 </div>
+ -->
 
-
- 
+<!--  
 <div ng-controller="realtimeStaticGridController">
 	<realtime-static-grid config="config" data="data"></realtime-static-grid>
 </div>
@@ -111,7 +135,7 @@
 <div ng-controller="ResourceChartController3">
 	<div class="ct-chart ct-golden-section" id="chart1"  data-ng-init="init()"></div>
 </div>
-
+ -->
 
 </body>
 </html>

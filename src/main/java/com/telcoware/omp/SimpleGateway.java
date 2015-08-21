@@ -13,22 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package omp.telcoware.com;
+package com.telcoware.omp;
 
 /**
- * Simple service that receives data in a byte array,
- * converts it to a String and appends it to 'echo:'.
- *
  * @author Gary Russell
  *
  */
-public class EchoService {
+public interface SimpleGateway {
 
-	public String test(String input) {
-		if ("FAIL".equals(input)) {
-			throw new RuntimeException("Failure Demonstration");
-		}
-		return "echo:" + input;
-	}
+	public String send(String text);
+	
+	//public String send(byte[] text);
 
 }

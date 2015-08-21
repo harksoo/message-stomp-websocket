@@ -9,25 +9,66 @@
 		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
 		http://www.springframework.org/schema/integration/ip http://www.springframework.org/schema/integration/ip/spring-integration-ip.xsd">
 
+
 	<context:property-placeholder />
+	
+	<!-- 
+	<int:converter>
+		<bean class="omp.telcoware.com.ByteArrayToStringConverter" />
+	</int:converter>
+	 -->
+	
+	<!-- 
+	<bean id="integrationConversionService"
+		class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="omp.telcoware.com.ByteArrayToStringConverter" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="byteArrayRawSerializer" class="org.springframework.integration.ip.tcp.serializer.ByteArrayRawSerializer" />
+ -->
 
 	<!-- Client side -->
-
-<!-- 
+	
+	
 	<int:gateway id="gw"
-		service-interface="org.springframework.integration.samples.tcpclientserver.SimpleGateway"
+		service-interface="omp.telcoware.com.SimpleGateway"
 		default-request-channel="input"/>
+	
 
+	<!--  		
+	<int:gateway id="gw2"
+		service-interface="omp.telcoware.com.SimpleGateway"
+		default-request-channel="input2"/>
+ -->
+
+	<!-- single-use : true : 메시지를 보낼때마다 연결을 생성,  false:기존 세션을 사용 -->
 	<int-ip:tcp-connection-factory id="client"
 		type="client"
-		host="localhost"
-		port="${availableServerSocket}"
+		host="10.10.3.152"
+		port="19595"
 		single-use="true"
 		so-timeout="10000"/>
-
-	<int:channel id="input" />
-
-	<int-ip:tcp-outbound-gateway id="outGateway"
+		
+	<!-- 
+	<int-ip:tcp-connection-factory id="client"
+		type="client"
+		host="10.10.3.152"
+		port="19595"
+		deserializer="byteArrayRawSerializer"
+    	serializer="byteArrayRawSerializer"
+		single-use="true"
+		so-timeout="10000"/>
+		 -->
+		 <!-- 
+		<int:publish-subscribe-channel id="input" />
+		 -->
+		 <int:channel id="input" />
+		 
+		 	<int-ip:tcp-outbound-gateway id="outGateway"
 		request-channel="input"
 		reply-channel="clientBytes2StringChannel"
 		connection-factory="client"
@@ -36,8 +77,101 @@
 
 	<int:object-to-string-transformer id="clientBytes2String"
 		input-channel="clientBytes2StringChannel" />
+		
+		<!-- 
+		<int-ip:tcp-outbound-channel-adapter id="outAdapter.client"
+		order="2"
+		channel="input"
+		connection-factory="client" /> 
+		 -->
+		 <!-- Collaborator -->
+
+	<!-- Also send a copy to the custom aggregator for correlation and
+	     so this message's replyChannel will be transferred to the
+	     aggregated message.
+	     The order ensures this gets to the aggregator first -->
+	     <!-- 
+	<int:bridge input-channel="input" output-channel="toAggregator.client"
+			order="1"/>
  -->
+ 
+	<!-- Asynch receive reply -->
+	<!-- 
+	<int-ip:tcp-inbound-channel-adapter id="inAdapter.client"
+		channel="toAggregator.client"
+		connection-factory="client" />
+		-->
+		 <!-- Collaborator -->
+		 
+
+	<!-- dataType attribute invokes the conversion service, if necessary -->
+	<!-- 
+	<int:channel id="toAggregator.client" datatype="java.lang.String" />
+	
+
+	<int:aggregator input-channel="toAggregator.client"
+		output-channel="toTransformer.client"
+		correlation-strategy-expression="payload.substring(0,3)"
+		release-strategy-expression="size() == 2" />
+
+	<int:transformer input-channel="toTransformer.client"
+		expression="payload.get(1)"/> 
+ -->		
+		<!-- The response is always second -->
+
+<!-- 
+	<int:publish-subscribe-channel id="input" />
+	 -->
+ 
+ 	<!--
+	<int:channel id="input" />
+	<int:channel id="replies">
+	    <int:queue/>
+	</int:channel>
+	-->
+
+	<!-- 
+	<int:channel id="input2" />
+	 -->
+	
+	<!-- 
+	<int-ip:tcp-outbound-channel-adapter 
+		id="outboundClient"
+		channel="input"
+		connection-factory="client"/>
+
+	<int-ip:tcp-inbound-channel-adapter 
+		id="inboundClient"
+    	channel="replies"
+    	connection-factory="client"/>
+	-->
+	<!-- 
+	<int-ip:tcp-outbound-gateway id="outGateway"
+		request-channel="input"
+		reply-channel="reply"
+		connection-factory="client"
+		request-timeout="10000"
+		reply-timeout="10000"/>
+	 -->
+		
+	<!-- 
+	<int-ip:tcp-outbound-gateway id="outGateway2"
+		request-channel="input"
+		reply-channel="clientBytes2StringChannel"
+		connection-factory="client"
+		request-timeout="10000"
+		reply-timeout="10000"/>
+		 -->
+
+<!-- 
+	<int:object-to-string-transformer id="clientBytes2String"
+		input-channel="clientBytes2StringChannel" />
+		 -->
+
+ 
 	<!-- Server side -->
+	
+	<!-- 
 
 	<int-ip:tcp-connection-factory id="crLfServer"
 		type="server"
@@ -64,5 +198,6 @@
 	<int:transformer id="errorHandler"
 		input-channel="errorChannel"
 		expression="payload.failedMessage.payload + ':' + payload.cause.message"/>
+		 -->
 
 </beans>
