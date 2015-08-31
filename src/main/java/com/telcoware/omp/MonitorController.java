@@ -1,12 +1,12 @@
 package com.telcoware.omp;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -14,6 +14,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.telcoware.omp.monitor.model.Item;
 import com.telcoware.omp.monitor.model.Lower;
 import com.telcoware.omp.monitor.model.Upper;
@@ -21,7 +22,9 @@ import com.telcoware.omp.monitor.model.Upper;
 @Controller
 public class MonitorController
 {
-
+//	public static final Logger logger = Logger.getLogger(MonitorController.class);
+	public static final Logger logger = LoggerFactory.getLogger(MonitorController.class);
+	
 	@Autowired
 	private SimpMessagingTemplate brokerMessagingTemplate;
 
@@ -43,7 +46,7 @@ public class MonitorController
 	@SendTo({"/topic/all"})
 	public ArrayList<Upper> getAll ( Message message )
 	{
-		System.out.println( "getAll() :: " + message);
+		logger.debug( "getAll() :: " + message);
 		return getUpperSampe();
 	}
 
@@ -51,7 +54,7 @@ public class MonitorController
 	@SendTo({"/topic/masked"})
 	public ArrayList<Upper> mask ( Message message )
 	{
-		System.out.println( "mask() :: " + message);
+		logger.debug( "mask() :: " + message);
 		return getUpperSampe2();
 	}
 
@@ -71,7 +74,7 @@ public class MonitorController
 		long sTime, eTime; 
 		double diffTime;
 		Calendar today1 = Calendar.getInstance();
-		System.out.println( "Start Time :: " 
+		logger.debug( "Start Time :: " 
 				+ today1.get(Calendar.HOUR_OF_DAY) + ":"  
 				+ today1.get(Calendar.MINUTE) + ":"
 				+ today1.get(Calendar.SECOND) + ":"
@@ -89,24 +92,28 @@ public class MonitorController
 //		String d = dateFormat.format(date);
 		//item.setItem(item);
 		
-		for ( int i=0; i<1000; i++ ) {
+		for ( int i = 0; i < 10000; i++ ) {
 			today = Calendar.getInstance();
-			currentTime = today.get(Calendar.YEAR)
-					+ "-" + ( today.get(Calendar.MONTH) + 1 ) 
-					+ "-" + today.get(Calendar.DATE) 
-					+ " " + today.get(Calendar.HOUR_OF_DAY) 
+			currentTime = 
+//					today.get(Calendar.YEAR)
+//					+ "-" + ( today.get(Calendar.MONTH) + 1 ) 
+//					+ "-" + today.get(Calendar.DATE) 
+					today.get(Calendar.HOUR_OF_DAY) 
 					+ ":" + today.get(Calendar.MINUTE)
 					+ ":" + today.get(Calendar.SECOND)
 					+ ":" + today.get(Calendar.MILLISECOND);
 			item.setDate(currentTime);
 			item.setAlarm(AlarmGrade.getRandomGrade());
-			this.brokerMessagingTemplate.convertAndSend("/topic/smRealtimeAlarm", item);
+			
+			ObjectMapper omapper = new ObjectMapper();
+			String jsonStr = omapper.writeValueAsString(item);			
+			this.brokerMessagingTemplate.convertAndSend("/topic/smRealtimeAlarm", jsonStr);
 			
 			count++;
 		}
 
 		Calendar today2 = Calendar.getInstance();
-		System.out.println( "End Time :: " 
+		logger.debug( "End Time :: " 
 				+ today2.get(Calendar.HOUR_OF_DAY) + ":"  
 				+ today2.get(Calendar.MINUTE) + ":"
 				+ today2.get(Calendar.SECOND) + ":"
@@ -115,32 +122,94 @@ public class MonitorController
 		eTime = today2.getTimeInMillis();
 //		System.out.println("eeTime :: " + eTime);
 		
-		System.out.println("Total count : " + count);
+		logger.debug("Total count : " + count);
 		double diff = 1000.0;
 		
 		diffTime = (eTime - sTime ) /diff;
-		System.out.println("소요 시간 : " + diffTime + " 초");
+		logger.debug("소요 시간 : " + diffTime + " 초");
 	}
 
-	@Scheduled(fixedRate=10L)
+	@Scheduled(fixedRate = 1000L)
 	public void scheduledSystemAlarmTwo() throws Exception
 	{	
-		Calendar today1 = Calendar.getInstance();
-		String currentTime = today1.get(Calendar.HOUR_OF_DAY) 
-				+ ":" + today1.get(Calendar.MINUTE)
-				+ ":" + today1.get(Calendar.SECOND)
-				+ ":" + today1.get(Calendar.MILLISECOND);
-		
-		Item item = new Item();
-		item.setSystem("SW");
-		item.setUpper("EAM");
-		item.setLower("HELLO");
-		item.setItem("HLRCS152A");
-		item.setLog("A1363 IPSP CONNECTION STATUS ALARM OCURRED");
-		item.setDate(currentTime);
-		item.setAlarm(AlarmGrade.getRandomGrade());
+//		ArrayList<Item> itemList = new ArrayList<Item>();
+				
+		for ( int i = 0; i < 100; i++ ) {
+			Calendar today1 = Calendar.getInstance();
+			String currentTime = today1.get(Calendar.HOUR_OF_DAY) 
+					+ ":" + today1.get(Calendar.MINUTE)
+					+ ":" + today1.get(Calendar.SECOND)
+					+ ":" + today1.get(Calendar.MILLISECOND);
+			
+			Item item = new Item();
+			item.setSystem("SW");
+			item.setUpper("EAM");
+			item.setLower("HELLO");
+			item.setItem("HLRCS152A");
+			item.setLog("A1363 IPSP CONNECTION STATUS ALARM OCURRED");
+			item.setDate(currentTime);
+			item.setAlarm(AlarmGrade.getRandomGrade());
+			
+//			itemList.add(item);
+			this.brokerMessagingTemplate.convertAndSend("/topic/smRealtimeAlarmTwo", item);
+		}
 		//item.setItem(item);
-		this.brokerMessagingTemplate.convertAndSend("/topic/smRealtimeAlarmTwo", item);
+	}
+
+	/**
+	 * 시스템 모니터링
+	 * @throws Exception
+	 */
+	@Scheduled(fixedRate = 1000L)
+	public void scheduledSystemMonitoring()
+			throws Exception
+	{
+		for ( int i = 0; i < 100; i++ ) {
+			ArrayList<Upper> uppArr = getUpperSampe();
+			this.brokerMessagingTemplate.convertAndSend("/topic/systemMonitoring", uppArr);
+		}
+	}
+
+	/**
+	 * 그래프
+	 * @throws Exception
+	 */
+	@Scheduled(fixedRate = 1000L)
+	public void scheduledResourceGraph() throws Exception {
+
+		//DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+//		Date date = new Date();
+		
+		for ( int i = 0 ; i < 100; i++ ) {
+			ResourceMonitor resourceMonitor = new ResourceMonitor();
+			
+			Calendar today1 = Calendar.getInstance();
+			String currentTime = today1.get(Calendar.HOUR_OF_DAY) 
+					+ ":" + today1.get(Calendar.MINUTE)
+					+ ":" + today1.get(Calendar.SECOND)
+					+ ":" + today1.get(Calendar.MILLISECOND);
+			
+			resourceMonitor.setTimestamp( currentTime );
+
+			// random 으로 해달 값을 설정한다.
+			Random generator = new Random();   
+			int random = generator.nextInt(100);
+
+
+			resourceMonitor.setCpuMax(50);
+			resourceMonitor.setCpuAverage(random);
+
+			random = generator.nextInt(100);
+			resourceMonitor.setRamMax(80);
+			resourceMonitor.setRamAverage(random);
+
+			random = generator.nextInt(100);
+			resourceMonitor.setDiskMax(60);
+			resourceMonitor.setDiskAverage(random);
+
+			this.brokerMessagingTemplate.convertAndSend("/topic/smResourceGraph", resourceMonitor);
+		}
 	}
 
 //	@Scheduled(fixedRate=1000L)
@@ -168,53 +237,6 @@ public class MonitorController
 //		this.brokerMessagingTemplate.convertAndSend("/topic/smRealtimeAlarmVe", a);
 //	}
 	
-	/**
-	 * 시스템 모니터링
-	 * @throws Exception
-	 */
-	@Scheduled(fixedRate=10L)
-	public void scheduledSystemMonitoring()
-			throws Exception
-	{
-		ArrayList<Upper> uppArr = getUpperSampe();
-		this.brokerMessagingTemplate.convertAndSend("/topic/systemMonitoring", uppArr);
-	}
-
-	/**
-	 * 그래프
-	 * @throws Exception
-	 */
-	@Scheduled(fixedRate = 10L)
-	public void scheduledResourceGraph() throws Exception {
-
-		ResourceMonitor resourceMonitor = new ResourceMonitor();
-
-		//DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-		Date date = new Date();
-
-		resourceMonitor.setTimestamp(dateFormat.format(date));
-
-		// random 으로 해달 값을 설정한다.
-		Random generator = new Random();   
-
-		int random = generator.nextInt(100);
-
-
-		resourceMonitor.setCpuMax(50);
-		resourceMonitor.setCpuAverage(random);
-
-		random = generator.nextInt(100);
-		resourceMonitor.setRamMax(80);
-		resourceMonitor.setRamAverage(random);
-
-		random = generator.nextInt(100);
-		resourceMonitor.setDiskMax(60);
-		resourceMonitor.setDiskAverage(random);
-
-		this.brokerMessagingTemplate.convertAndSend("/topic/smResourceGraph", resourceMonitor);
-	}
-
 	private ArrayList<Upper> getUpperSampe()
 	{
 		ArrayList<Upper> uppArr = new ArrayList<Upper>();

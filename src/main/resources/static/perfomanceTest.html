@@ -27,53 +27,123 @@
 </head>
 <body ng-app="perfomanceApp">
 	
-	<h2>Test Table</h2>
-	<table class="table table-hover" ng-controller="AlarmCtrl">
-		<thead>
-			<tr>
-				<th style="width:150px">System</th>
-				<th style="width:150px">Upper</th>
-				<th style="width:150px">Lower</th>
-				<th style="width:150px">Item</th>
-				<th style="width:200px">Date</th>
-				<th style="width:150px">Alarm</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="item in alarmList">
-				<td>{{ item.system }}</td>
-				<td>{{ item.upper }}</td>
-				<td>{{ item.lower }}</td>
-				<td>{{ item.item}}</td>
-				<td>{{ item.date }}</td>
-				<td ng-class="{ bgcolor0 : item.alarm == 'NORMAL', bgcolor1 : item.alarm == 'MINOR', bgcolor2 : item.alarm == 'MAJOR', bgcolor3 : item.alarm == 'CRITICAL'}">{{ item.alarm}}</td>
-			</tr>
-		</tbody>
-	</table>
-	
-	<h2>소요 시간</h2>
-	<table class="table table-hover" ng-controller="AlarmCtrl">
-		<thead>
-			<tr>
-				<th style="width:200px">시작시간</th>
-				<th style="width:200px">종료시간</th>
-				<th style="width:200px">처리건수</th>
-				<th style="width:200px">소요시간</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr ng-repeat="item in processTimeList">
-				<td>{{ item.startTime }}</td>
-				<td>{{ item.endTime }}</td>
-				<td>{{ item.count }}</td>
-				<td>{{ item.handleTime }}</td>
-			</tr>
-		</tbody>
-	</table>
+	<div id="wrapper">
+		<div id="page-wrapper">
+			<div class="container-fluid">
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-lg-6"> -->
+<!-- 						<h2>Bordered Table</h2> -->
+<!-- 						<div class="table-responsive" ng-controller="AlarmCtrl"> -->
+<!-- 							<table class="table table-bordered table-hover"> -->
+<!-- 								<thead> -->
+<!-- 									<tr> -->
+<!-- 										<th style="width:150px">System</th> -->
+<!-- 										<th style="width:150px">Upper</th> -->
+<!-- 										<th style="width:150px">Lower</th> -->
+<!-- 										<th style="width:150px">Item</th> -->
+<!-- 										<th style="width:200px">Date</th> -->
+<!-- 										<th style="width:150px">Alarm</th> -->
+<!-- 									</tr> -->
+<!-- 								</thead> -->
+<!-- 								<tbody> -->
+<!-- 									<tr ng-repeat="item in alarmList"> -->
+<!-- 										<td>{{ item.system }}</td> -->
+<!-- 										<td>{{ item.upper }}</td> -->
+<!-- 										<td>{{ item.lower }}</td> -->
+<!-- 										<td>{{ item.item}}</td> -->
+<!-- 										<td>{{ item.date }}</td> -->
+<!-- 										<td><button type="button" class="btn btn-xs "  ng-class="{ 'btn-success' : item.alarm == 'NORMAL', 'btn-info' : item.alarm == 'MINOR', 'btn-warning' : item.alarm == 'MAJOR', 'btn-danger' : item.alarm == 'CRITICAL' }">{{ item.alarm }}</button></td> -->
+<!-- 									</tr> -->
+<!-- 								</tbody> -->
+<!-- 							</table> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+					<!-- /.col-lg-6 -->
+<!-- 					<div class="col-lg-6"> -->
+<!-- 						<h2>소요시간 Bordered with Striped Rows</h2> -->
+<!-- 						<div class="table-responsive" ng-controller="AlarmCtrlTwo"> -->
+<!-- 							<table class="table table-bordered table-hover table-striped"> -->
+<!-- 								<thead> -->
+<!-- 									<tr> -->
+<!-- 										<th style="width:200px">시작시간</th> -->
+<!-- 										<th style="width:200px">종료시간</th> -->
+<!-- 										<th style="width:200px">처리건수</th> -->
+<!-- 										<th style="width:200px">소요시간</th> -->
+<!-- 									</tr> -->
+<!-- 								</thead> -->
+<!-- 								<tbody> -->
+<!-- 									<tr ng-repeat="item in processTimeList"> -->
+<!-- 										<td>{{ item.startTime }}</td> -->
+<!-- 										<td>{{ item.endTime }}</td> -->
+<!-- 										<td>{{ item.count }}</td> -->
+<!-- 										<td>{{ item.handleTime }}</td> -->
+<!-- 									</tr> -->
+<!-- 								</tbody> -->
+<!-- 							</table> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 					/.col-lg-6 -->
+<!-- 				</div> -->
+				<!-- /.row -->
+				
+				<div class="row">
+<!-- 					<div class="col-lg-6"> -->
+<!-- 						<h2>Bordered Table</h2> -->
+<!-- 						<div class="table-responsive" ng-controller="AlarmCtrlTwo"> -->
+<!-- 							<table class="table table-bordered table-hover"> -->
+<!-- 								<thead> -->
+<!-- 									<tr> -->
+<!-- 										<th style="width:150px">System</th> -->
+<!-- 										<th style="width:150px">Upper</th> -->
+<!-- 										<th style="width:150px">Lower</th> -->
+<!-- 										<th style="width:150px">Item</th> -->
+<!-- 										<th style="width:200px">Date</th> -->
+<!-- 										<th style="width:150px">Alarm</th> -->
+<!-- 									</tr> -->
+<!-- 								</thead> -->
+<!-- 								<tbody> -->
+<!-- 									<tr> -->
+<!-- 										<td ng-click="aa()">{{ alarmRowNew.system }}</td> -->
+<!-- 										<td>{{ alarmRowNew.upper }}</td> -->
+<!-- 										<td>{{ alarmRowNew.lower }}</td> -->
+<!-- 										<td>{{ alarmRowNew.item}}</td> -->
+<!-- 										<td>{{ alarmRowNew.date }}</td> -->
+<!-- 										<td><button type="button" class="btn btn-xs "  ng-class="{ 'btn-success' : alarmRowNew.alarm == 'NORMAL', 'btn-info' : alarmRowNew.alarm == 'MINOR', 'btn-warning' : alarmRowNew.alarm == 'MAJOR', 'btn-danger' : alarmRowNew.alarm == 'CRITICAL' }">{{ alarmRowNew.alarm }}</button></td> -->
+<!-- 									</tr> -->
+<!-- 									<tr> -->
+<!-- 										<td colspan="6">{{ alarmRowCount }}</td> -->
+<!-- 									</tr> -->
+<!-- 								</tbody> -->
+<!-- 							</table> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 				/.row	 -->
 
-	<div ng-controller="AlarmCtrl">
-		schedule receive 수 : <span>{{ count }}</span>	
-	</div>
+					<!-- /.col-lg-4 -->
+					<div class="col-lg-12" ng-controller="AlarmCtrl">
+							<div class="panel panel-default">
+									<div class="panel-heading">
+											Emphasis Classes
+									</div>
+									<div class="panel-body">
+											<p class="text-muted">{{ alarmRowNew }}</p>
+<!-- 											<p class="text-primary">{{ alarmRowCount }} </p> -->
+									</div>
+							</div>
+					</div>
+				</div>
+				<!-- /.row -->
+				
+			</div><!-- /.container-fluid -->
+		</div><!-- /#page-wrapper -->
+	</div><!-- /#wrapper -->
+	
+	
+
+<!-- 	<div ng-controller="AlarmCtrl"> -->
+<!-- 		schedule receive 수 : <span>{{ count }}</span>	 -->
+<!-- 	</div> -->
 	
 <!-- 		시작시간, 종료시간 -->
 <!-- 	<div ng-controller="AlarmCtrl"> -->
