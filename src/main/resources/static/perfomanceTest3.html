@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<link
+	href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700"
+	rel="stylesheet" type="text/css" />
+<!--     <link href="./css/style.css" rel="stylesheet" type="text/css" /> -->
+<link rel="stylesheet" href="./chartist-js/chartist.min.css">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<script src="sockjs-0.3.4.js"></script>
+<script src="stomp.js"></script>
+<script type="text/ecmascript" src="./jquery/jquery-2.1.4.js"></script>
+<script src="./angularJS/angular.min.js"></script>
+<script src="./lodash/lodash.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<!-- chartistjs -->
+<script src="./chartist-js/chartist.min.js"></script>
+
+<script src="./app/app3.js" type="text/javascript"></script>
+<script src="./app/alarm/controllers.js" type="text/javascript"></script>
+<script src="./app/alarm/services.js" type="text/javascript"></script>
+
+</head>
+<body ng-app="perfomanceApp">
+
+
+	<div id="wrapper">
+		<div id="page-wrapper">
+			<div class="container-fluid">
+				<div class="row">
+					<!-- /.col-lg-4 -->
+					<div class="col-lg-12" ng-controller="AlarmCtrl">
+							<div class="panel panel-default">
+									<div class="panel-heading">
+											Emphasis Classes
+									</div>
+									<div class="panel-body">
+											<p class="text-muted">{{ alarmRowNew }}</p>
+									</div>
+							</div>
+					</div>
+				</div>
+				<!-- /.row -->
+				
+				<div class="row">
+					<div class="col-lg-12" ng-controller="AlarmCtrlTwo">
+							<div class="panel panel-default">
+									<div class="panel-heading">
+											Emphasis Classes
+									</div>
+									<div class="panel-body">
+											<p class="text-muted">{{ alarmRowNew }}</p>
+									</div>
+							</div>
+					</div>
+				</div>
+				<!-- /.row -->
+				
+				<div class="row">
+					<div class="col-lg-12" ng-controller="Alarm1Ctrl">
+							<div class="panel panel-default">
+									<div class="panel-heading">
+											Emphasis Classes
+									</div>
+									<div class="panel-body">
+											<p class="text-muted">{{ sm2 }}</p>
+									</div>
+							</div>
+					</div>
+				</div>
+				<!-- /.row -->
+				
+<!-- 				<div class="row" ng-controller="AlarmChartCtrl"> -->
+<!-- 					<div class="col-lg-6"> -->
+<!-- 						<div class="panel panel-red"> -->
+<!-- 							<div class="panel-heading"> -->
+<!-- 								<h3 class="panel-title"><i class="fa fa-long-arrow-right"></i> Moving Line Chart1</h3> -->
+<!-- 							</div> -->
+<!-- 							<div class="panel-body"> -->
+<!-- 								<div class="flot-chart"> -->
+<!-- 									<div class="flot-chart-content" id="flot-moving-line-chart"></div> -->
+<!-- 									<div class="ct-chart ct-golden-section" id="chart1"></div> -->
+<!-- 								</div> -->
+<!-- 								<div class="text-right"> -->
+<!-- 									<a href="#">View Details <i class="fa fa-arrow-circle-right"></i></a> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div>				 -->
+<!-- 				</div> -->
+				<!-- /.row -->			
+			
+			</div><!-- /.container-fluid -->
+		</div><!-- /#page-wrapper -->
+	</div><!-- /#wrapper -->
+	
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<link
+	href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700"
+	rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<script type="text/ecmascript" src="./jquery/jquery-2.1.4.js"></script>
+<script src="./angularJS/angular.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script src="./app/app4.js" type="text/javascript"></script>
+
+</head>
+<body ng-app="websocketClientApp">
+
+	<div id="wrapper">
+		<div id="page-wrapper">
+			<div class="container-fluid">
+				
+				<h3>WebSocket Test Page</h3>
+
+				<input type="text" ng-model="message"/>
+				<button ng-click="send()">SEND</button>
+				
+				<ul ng-repeat="echo in echoMessages">
+				  <li>{{echo}}</li>
+				</ul>
+							
+			</div><!-- /.container-fluid -->
+		</div><!-- /#page-wrapper -->
+	</div><!-- /#wrapper -->
+	
+</body>
+</html>
